@@ -1,0 +1,10 @@
+{
+    "editor.formatOnSave": true,
+    "python.linting.pylintPath": "C:\\Users\\faisal\\Documents\\youtube\\blog\\env\\Scripts\\pylint.exe",
+    "python.linting.pylintArgs": [
+        "--load-plugins",
+        "pylint_django"
+    ],
+    "python.linting.pylintEnabled": true,
+    "python.pythonPath": "C:\\Users\\faisal\\Documents\\youtube\\blog\\env\\Scripts\\python.exe",
+}
