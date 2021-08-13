@@ -1,5 +1,4 @@
 import jwt
-from django.http import HttpResponsePermanentRedirect
 from django.utils.http import urlsafe_base64_decode, urlsafe_base64_encode
 from django.utils.encoding import smart_str, smart_bytes, DjangoUnicodeDecodeError
 from django.contrib.auth.tokens import PasswordResetTokenGenerator
@@ -25,9 +24,7 @@ class RegisterAPIView(generics.GenericAPIView):
     def post(self, request):
         user = request.data
         email = request.data.get('email')
-        print(email)
         if not User.objects.filter(email=email).exists():
-            print(True)
             serializer = self.serializer_class(data=user)
             serializer.is_valid(raise_exception=True)
             serializer.save()
@@ -66,12 +63,11 @@ class VerifyEmailView(views.APIView):
             if not user.is_active:
                 user.is_active = True
                 user.save()
-            return HttpResponsePermanentRedirect(config('FRONTEND_URL') + '/account/email_valid/true')
+            return Response({'email': 'Successfully activated'}, status=status.HTTP_200_OK)
         except jwt.ExpiredSignatureError as identifier:
-            return HttpResponsePermanentRedirect(config('FRONTEND_URL') + '/account/email_valid/expired')
+            return Response({'error': 'Activation Expired'}, status=status.HTTP_400_BAD_REQUEST)
         except jwt.exceptions.DecodeError as identifier:
-            return HttpResponsePermanentRedirect(config('FRONTEND_URL') + '/account/email_valid/invalid')
-
+            return Response({'error': 'Invalid token'}, status=status.HTTP_400_BAD_REQUEST)
 
 class LoginAPIView(generics.GenericAPIView):
     serializer_class = LoginSerializer
@@ -99,6 +95,7 @@ class RequestPasswordResetEmail(generics.GenericAPIView):
 
     def post(self, request):
         serializer = self.serializer_class(data=request.data)
+        serializer.is_valid(raise_exception=True)
         email = request.data.get('email', '')
         if User.objects.filter(email=email).exists():
             user = User.objects.get(email=email)
@@ -117,7 +114,6 @@ class SetNewPasswordAPIView(generics.GenericAPIView):
 
     def patch(self, request, uidb64, token):
         try:
-            print(request.data)
             id = smart_str(urlsafe_base64_decode(uidb64))
             user = User.objects.get(id=id)
             if not PasswordResetTokenGenerator().check_token(user, token):
