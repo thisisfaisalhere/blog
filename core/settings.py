@@ -21,9 +21,11 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'rest_framework',
+    # 'rest_framework.authtoken',
     'corsheaders',
+    # 'rest_framework_simplejwt.token_blacklist',
     'users.apps.UserConfig',
-    'rest_framework_simplejwt.token_blacklist',
+    'blog.apps.BlogConfig'
 ]
 
 MIDDLEWARE = [
@@ -119,11 +121,10 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 # RestFramework
 
 REST_FRAMEWORK = {
-    'DEFAULT_AUTHENTICATION_CLASSES': [
-        'rest_framework_simplejwt.authentication.JWTAuthentication',
-    ],
     'DEFAULT_SCHEMA_CLASS': 'rest_framework.schemas.coreapi.AutoSchema',
-    'EXCEPTION_HANDLER': 'rest_framework.views.exception_handler',
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
+    )
 }
 
 # CORS
@@ -147,7 +148,7 @@ SIMPLE_JWT = {
     'AUDIENCE': None,
     'ISSUER': None,
 
-    'AUTH_HEADER_TYPES': ('JWT ',),
+    'AUTH_HEADER_TYPES': ('Bearer',),
     'AUTH_HEADER_NAME': 'HTTP_AUTHORIZATION',
     'USER_ID_FIELD': 'id',
     'USER_ID_CLAIM': 'user_id',
@@ -170,5 +171,4 @@ EMAIL_HOST_PASSWORD = config('EMAIL_HOST_PASSWORD')
 EMAIL_USE_TLS = 'True'
 
 # DEFAULT AUTO FIELD
-
 DEFAULT_AUTO_FIELD='django.db.models.BigAutoField'

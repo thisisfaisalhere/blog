@@ -17,7 +17,6 @@ class UserAdminConfig(UserAdmin):
         (None, {'fields': ('email', 'name', 'password')}),
         ('Permissions', {
             'fields': (
-                'user_type',
                 'is_active',
                 'is_staff',
                 'is_superuser',
@@ -34,7 +33,6 @@ class UserAdminConfig(UserAdmin):
                 'name',
                 'password1',
                 'password2',
-                'user_type',
                 'is_active',
                 'is_staff',
             )}
