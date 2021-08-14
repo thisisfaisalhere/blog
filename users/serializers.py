@@ -42,7 +42,7 @@ class EmailVerificationSerializer(serializers.ModelSerializer):
 
 
 class LoginSerializer(serializers.ModelSerializer):
-    email = serializers.EmailField(max_length=255, min_length=3, write_only=True)
+    email = serializers.EmailField(max_length=255, min_length=3)
     password = serializers.CharField(
         max_length=68, min_length=6, write_only=True)
 
@@ -71,6 +71,7 @@ class LoginSerializer(serializers.ModelSerializer):
             raise AuthenticationFailed('Account disabled, contact admin')
         elif user:
             return {
+                'email': user.email,
                 'name': user.name,
                 'tokens': user.tokens,
             }
