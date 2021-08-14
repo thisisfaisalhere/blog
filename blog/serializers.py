@@ -39,7 +39,8 @@ class ArticleListSerializer(serializers.ModelSerializer):
           'slug', 
           'excerpt',
           'author', 
-          'published_on'
+          'published_on',
+          'published'
         )
         model = Article
 

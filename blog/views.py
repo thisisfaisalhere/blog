@@ -13,7 +13,7 @@ class StandardResultsSetPagination(pagination.PageNumberPagination):
   max_page_size = 100
 
 # blog list api
-class BlogList(generics.ListCreateAPIView):
+class BlogList(generics.ListAPIView):
   queryset = Article.postobjects.all()
   serializer_class = ArticleListSerializer
   pagination_class = StandardResultsSetPagination
@@ -43,7 +43,7 @@ class EditBlogApi(views.APIView):
     return data
 
   def get(self, request, format=None):
-    article = Article.objects.all()
+    article = Article.objects.filter(author=request.user)
     serializer = ArticleListSerializer(article, many=True)
     return Response(serializer.data, status=status.HTTP_200_OK)
 
@@ -84,7 +84,7 @@ class CommentApi(views.APIView):
       raise Http404
 
   def add_user_to_data(self, data, user):
-    data._mutable = True
+    # data._mutable = True
     data['user'] = user.id
     return data
 
@@ -100,22 +100,3 @@ class CommentApi(views.APIView):
       serializer.save()
       return Response(serializer.data, status=status.HTTP_201_CREATED)
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-  
-  def put(self, request, pk, format=None):
-    comment = self.get_object(pk=pk)
-    if comment.user == request.user:
-      data = self.add_user_to_data(data=request.data, user=request.user)
-      serializer = AddCommentSerializer(comment, data=data)
-      if serializer.is_valid():
-        serializer.save()
-        return Response(serializer.data)
-      return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-    return Response({"error": "UnAuthorized"}, status=status.HTTP_403_FORBIDDEN)
-
-  def delete(self, request, pk, format=None):
-    comment = self.get_object(pk=pk)
-    if comment.user == request.user:
-      comment.delete()
-      return Response(status=status.HTTP_204_NO_CONTENT)
-    return Response({"error": "UnAuthorized"}, status=status.HTTP_403_FORBIDDEN)
-
