@@ -17,7 +17,7 @@ class Article(models.Model):
     excerpt = models.TextField(_("Excerpt"))
     body = models.TextField(_("Body"))
     published = models.BooleanField(_("Published"), default=False)
-    published_by = models.ForeignKey("users.User", verbose_name=_("User"), on_delete=models.CASCADE)
+    author = models.ForeignKey("users.User", verbose_name=_("User"), on_delete=models.CASCADE)
     published_on = models.DateTimeField(_("Published On"), auto_now_add=True)
 
     objects = models.Manager()

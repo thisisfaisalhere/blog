@@ -3,11 +3,12 @@ from rest_framework import generics, status,\
    views, permissions, pagination
 from rest_framework.response import Response
 from blog.models import Article, Comment
-from .serializers import AddCommentSerializer, ArticleCreateSerializer, ArticleListSerializer, ArticleDetailsSerializer, CommentSerializer
+from .serializers import AddCommentSerializer, ArticleCreateSerializer,\
+  ArticleListSerializer, ArticleDetailsSerializer, CommentSerializer
 
 
 class StandardResultsSetPagination(pagination.PageNumberPagination):
-  page_size = 10
+  page_size = 6
   page_size_query_param = 'page_size'
   max_page_size = 100
 
@@ -23,6 +24,7 @@ class BlogDetail(generics.RetrieveAPIView):
 
   def get(self, request, slug):
     article = Article.objects.get(slug=slug)
+      # .select_related('author__name')\
     serializer = self.serializer_class(article)
     return Response(serializer.data, status=status.HTTP_200_OK)
 
@@ -37,8 +39,7 @@ class EditBlogApi(views.APIView):
       raise Http404
 
   def add_user_to_data(self, data, user):
-    data._mutable = True
-    data['published_by'] = user.id
+    data['author'] = user.id
     return data
 
   def get(self, request, format=None):
@@ -56,7 +57,7 @@ class EditBlogApi(views.APIView):
   
   def put(self, request, pk, format=None):
     article = self.get_object(pk=pk)
-    if article.published_by == request.user:
+    if article.author == request.user:
       data = self.add_user_to_data(data=request.data, user=request.user)
       serializer = ArticleCreateSerializer(article, data=data)
       if serializer.is_valid():
@@ -67,7 +68,7 @@ class EditBlogApi(views.APIView):
 
   def delete(self, request, pk, format=None):
     article = self.get_object(pk=pk)
-    if article.published_by == request.user:
+    if article.author == request.user:
       article.delete()
       return Response(status=status.HTTP_204_NO_CONTENT)
     return Response({"error": "UnAuthorized"}, status=status.HTTP_403_FORBIDDEN)
@@ -87,8 +88,8 @@ class CommentApi(views.APIView):
     data['user'] = user.id
     return data
 
-  def get(self, request, format=None):
-    comment = Comment.objects.all()
+  def get(self, request, pk, format=None):
+    comment = Comment.objects.filter(article__id=pk)
     serializer = CommentSerializer(comment, many=True)
     return Response(serializer.data, status=status.HTTP_200_OK)
   

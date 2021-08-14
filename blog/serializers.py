@@ -13,7 +13,7 @@ class ArticleDetailsSerializer(serializers.ModelSerializer):
           'excerpt', 
           'body', 
           'published', 
-          'published_by',
+          'author',
           'published_on'
         )
         model = Article
@@ -26,7 +26,7 @@ class ArticleCreateSerializer(serializers.ModelSerializer):
           'excerpt', 
           'body', 
           'published',
-          'published_by',
+          'author',
         )
         model = Article
 
@@ -38,7 +38,7 @@ class ArticleListSerializer(serializers.ModelSerializer):
           'thumbnail', 
           'slug', 
           'excerpt',
-          'published_by', 
+          'author', 
           'published_on'
         )
         model = Article
