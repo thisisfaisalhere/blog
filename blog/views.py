@@ -58,7 +58,9 @@ class EditBlogApi(views.APIView):
   def put(self, request, pk, format=None):
     article = self.get_object(pk=pk)
     if article.author == request.user:
-      data = self.add_user_to_data(data=request.data, user=request.user)
+      data = request.data
+      data._mutable = True
+      data = self.add_user_to_data(data=data, user=request.user)
       serializer = ArticleCreateSerializer(article, data=data)
       if serializer.is_valid():
         serializer.save()
