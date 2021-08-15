@@ -116,25 +116,11 @@ sudo nano /etc/nginx/sites-available/blog
 
 ```
 server {
-    listen 443 ssl http2;
-    listen [::]:443 ssl http2;
-    ssl_certificate         /etc/ssl/certs/cert.pem;
-    ssl_certificate_key     /etc/ssl/private/key.pem;
-    server_name IP;
+    listen 80;
+    server_name domain_or_IP;
 
-    location / {
-        proxy_pass http://localhost:5000;
-    }
-}
-
-server {
-    listen 443 ssl http2;
-    listen [::]:443 ssl http2;
-    ssl_certificate         /etc/ssl/certs/cert.pem;
-    ssl_certificate_key     /etc/ssl/private/key.pem;
-    server_name IP;
-
-    location /static/ {
+    location = /favicon.ico { access_log off; log_not_found off; }
+    location /staticfiles/ {
         root /home/ubuntu/blog;
     }
 
@@ -143,7 +129,6 @@ server {
         proxy_pass http://unix:/home/ubuntu/blog/core.sock;
     }
 }
-
 ```
 
 ### Linking site-available to site-enable
