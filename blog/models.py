@@ -6,9 +6,18 @@ from autoslug import AutoSlugField
 # Create your models here.
 class Article(models.Model):
 
+    draft = 'Draft'
+    published = 'Published'
+
+    TYPE = [
+        (draft, 'Draft'),
+        (published, 'Published'),
+    ]
+
+
     class PostObjects(models.Manager):
         def get_queryset(self):
-            return super().get_queryset().filter(published=True)
+            return super().get_queryset().filter(published="Published")
 
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     title = models.CharField(_("Title"), max_length=200, unique=True)
@@ -16,7 +25,8 @@ class Article(models.Model):
     slug = AutoSlugField(populate_from='title')
     excerpt = models.TextField(_("Excerpt"))
     body = models.TextField(_("Body"))
-    published = models.BooleanField(_("Published"), default=False)
+    published = models.CharField(verbose_name="User Type", max_length=10,
+                                 choices=TYPE, default="Published")
     author = models.ForeignKey("users.User", verbose_name=_("User"), on_delete=models.CASCADE)
     published_on = models.DateTimeField(_("Published On"), auto_now_add=True)
 
