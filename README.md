@@ -1,6 +1,10 @@
-# MyTodoApp
+# Blog Application
 
 -- blog application backend
+
+## Application Hosted at AWS
+
+IP `15.206.189.128`
 
 ## Getting on-board
 
