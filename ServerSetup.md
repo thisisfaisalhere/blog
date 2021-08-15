@@ -117,10 +117,14 @@ sudo nano /etc/nginx/sites-available/blog
 ```
 server {
     listen 80;
-    server_name domain_or_IP;
+    server_name 15.206.189.128;
 
     location = /favicon.ico { access_log off; log_not_found off; }
-    location /staticfiles/ {
+    location /static/ {
+        root /home/ubuntu/blog;
+    }
+
+    location /media/ {
         root /home/ubuntu/blog;
     }
 
