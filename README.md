@@ -41,3 +41,7 @@ data base diagram [link](https://drawsql.app/innovacio-technologies/diagrams/blo
 
 Please go to link root url for backend
 right now it'll be the IP address
+
+### Server setup Documentation
+
+follow [this](./ServerSetup.md)
