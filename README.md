@@ -32,3 +32,12 @@ IP `15.206.189.128`
 ### App frontend repo
 
 [repo link](https://github.com/thisisfaisalhere/blog-frontend)
+
+### DB Design
+
+data base diagram [link](https://drawsql.app/innovacio-technologies/diagrams/blog-db)
+
+### API Documentation
+
+Please go to link root url for backend
+right now it'll be the IP address
