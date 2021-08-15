@@ -10,6 +10,7 @@ django-filter==2.4.0
 django-js-asset==1.2.2
 djangorestframework==3.12.4
 djangorestframework-simplejwt==4.7.2
+gunicorn==20.1.0
 idna==3.2
 itypes==1.2.0
 Jinja2==3.0.1
