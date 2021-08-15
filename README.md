@@ -37,11 +37,11 @@ IP `15.206.189.128`
 
 data base diagram [link](https://drawsql.app/innovacio-technologies/diagrams/blog-db)
 
-### API Documentation
-
-Please go to link root url for backend
-right now it'll be the IP address
-
 ### Server setup Documentation
 
 follow [this](./ServerSetup.md)
+
+## Important links
+
+- [api docs](http://15.206.189.128)
+- [admin panel](http://15.206.189.128/admin)
